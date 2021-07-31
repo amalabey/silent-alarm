@@ -1,18 +1,18 @@
 import axios from 'axios';
 import 'date-fns';
-import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
-import { useEffect } from 'react/cjs/react.production.min';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import IconButton from '@material-ui/core/IconButton';
+import AlarmAddIcon from '@material-ui/icons/AlarmAdd';
 
 function App() {
   const [alarms, setAlarms] = useState(null);
-  const [selectedTime, setAlarmTime] = useState(null);
+  const [selectedTime, setAlarmTime] = useState(new Date('2021-08-01'));
   const apiUrl = "/api/v1/alarms";
 
   const fetchData = async () => {
@@ -24,9 +24,11 @@ function App() {
     setAlarmTime(date);
   };
 
-  useEffect(() => {
-    fetchData();
-  },[]);
+  const addAlarm = () => {
+    axios.post(apiUrl, {'alarmtime': selectedTime.toLocaleString()});
+  }
+
+  fetchData();
 
   return (
     <div className="App">
@@ -43,6 +45,14 @@ function App() {
             }}
           />
         </MuiPickersUtilsProvider>
+        <IconButton color="secondary" aria-label="add an alarm" onClick={addAlarm}>
+          <AlarmAddIcon />
+        </IconButton>
+      </div>
+      <div className="test">
+        {selectedTime &&
+          <h4>{selectedTime.toLocaleString()}</h4>
+        }
       </div>
       <div className="alarms">
         {alarms &&

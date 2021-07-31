@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, abort
 
 app = Flask(__name__, template_folder='frontend/build', static_folder='frontend/build/static')
 
@@ -18,6 +18,18 @@ def get_alarms():
         
     conn.close()
     return jsonify(alarms_list)
+
+@app.route('/api/v1/alarms', methods=['POST'])
+def add_alarm():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO alarms (alarmtime) VALUES(\'?\')', (request.json['alarmtime']))
+    conn.close()
+    
+    return jsonify({'status': 'success'}), 201
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
