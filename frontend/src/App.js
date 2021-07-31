@@ -2,6 +2,7 @@ import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
+import { useEffect } from 'react/cjs/react.production.min';
 
 function App() {
   const [alarms, setAlarms] = useState(null);
@@ -12,13 +13,12 @@ function App() {
     setAlarms(response.data) 
   }
 
+  useEffect(() => {
+    fetchData();
+  },[]);
+
   return (
     <div className="App">
-      <div>
-        <button className="fetch-button" onClick={fetchData}>
-          Fetch Data
-        </button>
-      </div>
       <div className="alarms">
         {alarms &&
           alarms.map((alarm, index) => {
