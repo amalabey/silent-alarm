@@ -8,13 +8,10 @@ with open('schema.sql') as f:
 
 cur = connection.cursor()
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('First Post', 'Content for the first post')
-            )
+cur.execute('INSERT INTO alarms (alarmtime) VALUES(\'2021-07-31 13:32\')')
+cur.execute('INSERT INTO alarms (alarmtime) VALUES(\'2021-08-01 05:00\')')
+cur.execute('INSERT INTO alarms (alarmtime) VALUES(\'2021-08-02 01:10\')')
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            ('Second Post', 'Content for the second post')
-            )
 
 connection.commit()
 connection.close()
