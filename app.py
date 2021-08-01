@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, time, timedelta
+from dateutil.parser import parse
 import sqlite3
 from flask import Flask, render_template, jsonify, request, abort
 
@@ -15,11 +16,16 @@ def get_alarms():
     alarms_list = list()
     for row in alarm_rows:
         if row['alarmtime'] is not None:
-            alarm = {'time': datetime.strptime(row['alarmtime'],"%Y-%m-%d %H:%M")}
+            alarm = datetime.strptime(row['alarmtime'],"%Y-%m-%d %H:%M")
+            #alarm = {'time': parse(row['alarmtime'], ignoretz = True)}
             alarms_list.append(alarm)
-        
+
+    yesterday = datetime.today() - timedelta(days=1)
+    upcoming_alarms = [x for x in alarms_list if x > yesterday]
+    formatted_alarms = [{'time': x.strftime("%Y-%m-%d %H:%M")} for x in sorted(upcoming_alarms)]
+
     conn.close()
-    return jsonify(alarms_list)
+    return jsonify(formatted_alarms)
 
 @app.route('/api/v1/alarms', methods=['POST'])
 def add_alarm():

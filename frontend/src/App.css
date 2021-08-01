@@ -45,3 +45,7 @@
   display: inline-block;
   padding-top: 25px;
 }
+
+.pastAlarm span.MuiListItemText-primary {
+  text-decoration: line-through;
+}

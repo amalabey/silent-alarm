@@ -74,8 +74,9 @@ function App() {
                 const alarmTime = new Date(alarm.time);
                 const timeText = format(alarmTime, "h:mm a");
                 const fullText = formatRelative(alarmTime, new Date());
+                const listItemClass = alarmTime < new Date() ? "pastAlarm" : "upcomingAlarm";
                 return (
-                  <ListItem>
+                  <ListItem className={listItemClass}>
                     <ListItemText primary={timeText} secondary={fullText} />
                   </ListItem>
                 );
