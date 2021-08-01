@@ -21,12 +21,12 @@ def get_alarms():
 
 @app.route('/api/v1/alarms', methods=['POST'])
 def add_alarm():
-    if not request.json or not 'title' in request.json:
+    if not request.json or not 'alarmtime' in request.json:
         abort(400)
 
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('INSERT INTO alarms (alarmtime) VALUES(\'?\')', (request.json['alarmtime']))
+    cur.execute('INSERT INTO alarms (alarmtime) VALUES(?)', (request.json['alarmtime'],))
     conn.close()
     
     return jsonify({'status': 'success'}), 201

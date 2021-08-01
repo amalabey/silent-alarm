@@ -1,7 +1,7 @@
 import axios from 'axios';
 import 'date-fns';
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker
@@ -28,7 +28,9 @@ function App() {
     axios.post(apiUrl, {'alarmtime': selectedTime.toLocaleString()});
   }
 
-  fetchData();
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="App">
