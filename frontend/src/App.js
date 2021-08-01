@@ -9,6 +9,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import IconButton from '@material-ui/core/IconButton';
 import AlarmAddIcon from '@material-ui/icons/AlarmAdd';
+import Grid from '@material-ui/core/Grid';
 
 function App() {
   const [alarms, setAlarms] = useState(null);
@@ -36,38 +37,42 @@ function App() {
 
   return (
     <div className="App">
-      <div className="setAlarm">
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardTimePicker
-            margin="normal"
-            id="time-picker"
-            label="Time picker"
-            value={selectedTime}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change time',
-            }}
-          />
-        </MuiPickersUtilsProvider>
-        <IconButton color="secondary" aria-label="add an alarm" onClick={addAlarm}>
-          <AlarmAddIcon />
-        </IconButton>
-      </div>
-      <div className="test">
-        {selectedTime &&
-          <h4>{selectedTime.toLocaleString()}</h4>
-        }
-      </div>
-      <div className="alarms">
-        {alarms &&
-          alarms.map((alarm, index) => {
-            return (
-              <div className="alarm" key={index}>
-                <h3>{alarm.time}</h3>
-              </div>
-            );
-          })}
-      </div>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center">
+        <Grid item xs={12}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardTimePicker
+                className="timePicker"
+                margin="normal"
+                id="time-picker"
+                label="Alarm Time"
+                value={selectedTime}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change time',
+                }}
+              />
+          </MuiPickersUtilsProvider>
+          <div className="addAlarmBtn">
+            <IconButton color="primary" aria-label="add an alarm" onClick={addAlarm}>
+              <AlarmAddIcon />
+            </IconButton>
+          </div>
+        </Grid>
+        <Grid item xs={12}>
+          {alarms &&
+            alarms.map((alarm, index) => {
+              return (
+                <div className="alarm" key={index}>
+                  <h3>{alarm.time}</h3>
+                </div>
+              );
+            })}
+        </Grid>
+      </Grid>
     </div>
   );
 }

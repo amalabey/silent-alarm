@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.timePicker {
+  display: inline-block;
+}
+
+.addAlarmBtn {
+  display: inline-block;
+  padding-top: 25px;
+}
