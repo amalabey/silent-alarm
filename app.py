@@ -19,7 +19,7 @@ def get_alarms():
             #alarm = {'time': parse(row['alarmtime'], ignoretz = True)}
             alarms_list.append(alarm)
 
-    yesterday = datetime.today() - timedelta(days=1)
+    yesterday = datetime.today() - timedelta(hours=3)
     upcoming_alarms = [x for x in alarms_list if x > yesterday]
     formatted_alarms = [{'time': x.strftime("%Y-%m-%d %H:%M")} for x in sorted(upcoming_alarms)]
 
