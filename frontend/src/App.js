@@ -1,6 +1,6 @@
 import axios from 'axios';
 import 'date-fns';
-import { format } from 'date-fns';
+import { format, formatRelative } from 'date-fns';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import {
@@ -11,6 +11,9 @@ import DateFnsUtils from '@date-io/date-fns';
 import IconButton from '@material-ui/core/IconButton';
 import AlarmAddIcon from '@material-ui/icons/AlarmAdd';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 function App() {
   const [alarms, setAlarms] = useState(null);
@@ -65,14 +68,19 @@ function App() {
           </div>
         </Grid>
         <Grid item xs={12}>
-          {alarms &&
-            alarms.map((alarm, index) => {
-              return (
-                <div className="alarm" key={index}>
-                  <h3>{alarm.time}</h3>
-                </div>
-              );
-            })}
+          <List>
+            {alarms &&
+              alarms.map((alarm, index) => {
+                const alarmTime = new Date(alarm.time);
+                const timeText = format(alarmTime, "h:mm a");
+                const fullText = formatRelative(alarmTime, new Date());
+                return (
+                  <ListItem>
+                    <ListItemText primary={timeText} secondary={fullText} />
+                  </ListItem>
+                );
+              })}
+          </List>
         </Grid>
       </Grid>
     </div>

@@ -15,7 +15,7 @@ def get_alarms():
     alarms_list = list()
     for row in alarm_rows:
         if row['alarmtime'] is not None:
-            alarm = {'time': datetime.fromisoformat(row['alarmtime'])}
+            alarm = {'time': datetime.strptime(row['alarmtime'],"%Y-%m-%d %H:%M")}
             alarms_list.append(alarm)
         
     conn.close()
