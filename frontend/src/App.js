@@ -1,5 +1,6 @@
 import axios from 'axios';
 import 'date-fns';
+import { format } from 'date-fns';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import {
@@ -13,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 
 function App() {
   const [alarms, setAlarms] = useState(null);
-  const [selectedTime, setAlarmTime] = useState(new Date('2021-08-01'));
+  const [selectedTime, setAlarmTime] = useState(new Date());
   const apiUrl = "/api/v1/alarms";
 
   const fetchData = async () => {
@@ -26,7 +27,8 @@ function App() {
   };
 
   const addAlarm = () => {
-    axios.post(apiUrl, {'alarmtime': selectedTime.toLocaleString()}).then(() => {
+    const formattedDateStr = format(selectedTime, "yyyy-MM-dd HH:mm")
+    axios.post(apiUrl, {'alarmtime': formattedDateStr}).then(() => {
       fetchData();
     });
   }

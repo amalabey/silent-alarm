@@ -1,3 +1,4 @@
+from datetime import datetime
 import sqlite3
 from flask import Flask, render_template, jsonify, request, abort
 
@@ -13,8 +14,9 @@ def get_alarms():
     alarm_rows = conn.execute('SELECT * FROM alarms').fetchall()
     alarms_list = list()
     for row in alarm_rows:
-        alarm = {'time':row['alarmtime']}
-        alarms_list.append(alarm)
+        if row['alarmtime'] is not None:
+            alarm = {'time': datetime.fromisoformat(row['alarmtime'])}
+            alarms_list.append(alarm)
         
     conn.close()
     return jsonify(alarms_list)
