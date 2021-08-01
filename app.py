@@ -27,6 +27,7 @@ def add_alarm():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('INSERT INTO alarms (alarmtime) VALUES(?)', (request.json['alarmtime'],))
+    conn.commit()
     conn.close()
     
     return jsonify({'status': 'success'}), 201

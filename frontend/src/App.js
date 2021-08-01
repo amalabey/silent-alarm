@@ -25,7 +25,9 @@ function App() {
   };
 
   const addAlarm = () => {
-    axios.post(apiUrl, {'alarmtime': selectedTime.toLocaleString()});
+    axios.post(apiUrl, {'alarmtime': selectedTime.toLocaleString()}).then(() => {
+      fetchData();
+    });
   }
 
   useEffect(() => {
