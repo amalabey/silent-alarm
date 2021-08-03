@@ -26,6 +26,7 @@ def set_alarm_state(id, state):
     conn.row_factory = sqlite3.Row
     cur = conn.cursor();
     cur.execute('UPDATE alarms SET alarmstate = ? WHERE id = ?', (id, state))
+    conn.commit()
     conn.close()
 
 def check_alarm_state(id):

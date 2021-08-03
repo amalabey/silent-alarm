@@ -14,6 +14,8 @@ import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function App() {
   const [alarms, setAlarms] = useState(null);
@@ -32,6 +34,12 @@ function App() {
   const addAlarm = () => {
     const formattedDateStr = format(selectedTime, "yyyy-MM-dd HH:mm")
     axios.post(apiUrl, {'alarmtime': formattedDateStr}).then(() => {
+      fetchData();
+    });
+  }
+
+  const deleteAlarm = (id) => {
+    axios.delete(`${apiUrl}/${id}`).then(() => {
       fetchData();
     });
   }
@@ -78,6 +86,11 @@ function App() {
                 return (
                   <ListItem className={listItemClass}>
                     <ListItemText primary={timeText} secondary={fullText} />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete" onClick={() => deleteAlarm(alarm.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 );
               })}

@@ -11,20 +11,17 @@ def index():
 @app.route('/api/v1/alarms', methods=['GET'])
 def get_alarms():
     conn = get_db_connection()
-    alarm_rows = conn.execute('SELECT * FROM alarms').fetchall()
+    alarm_rows = conn.execute('SELECT id, alarmtime, alarmstate FROM alarms').fetchall()
     alarms_list = list()
     for row in alarm_rows:
         if row['alarmtime'] is not None:
-            alarm = datetime.strptime(row['alarmtime'],"%Y-%m-%d %H:%M")
-            #alarm = {'time': parse(row['alarmtime'], ignoretz = True)}
+            alarm = { 'id': row['id'], 'time': row['alarmtime'], 'timedt': datetime.strptime(row['alarmtime'],"%Y-%m-%d %H:%M"), 'state': row['alarmstate']}
             alarms_list.append(alarm)
 
-    yesterday = datetime.today() - timedelta(hours=3)
-    upcoming_alarms = [x for x in alarms_list if x > yesterday]
-    formatted_alarms = [{'time': x.strftime("%Y-%m-%d %H:%M")} for x in sorted(upcoming_alarms)]
-
+    from_time = datetime.today() - timedelta(hours=3)
+    upcoming_alarms = [x for x in sorted(alarms_list, key=lambda k: k['timedt']) if x['timedt'] > from_time]
     conn.close()
-    return jsonify(formatted_alarms)
+    return jsonify(upcoming_alarms)
 
 @app.route('/api/v1/alarms', methods=['POST'])
 def add_alarm():
@@ -36,7 +33,15 @@ def add_alarm():
     cur.execute('INSERT INTO alarms (alarmtime) VALUES(?)', (request.json['alarmtime'],))
     conn.commit()
     conn.close()
-    
+    return jsonify({'status': 'success'}), 201
+
+@app.route('/api/v1/alarms/<id>', methods=['DELETE'])
+def delete_alarm(id):
+    conn = get_db_connection()
+    cur = conn.cursor();
+    cur.execute('DELETE FROM alarms WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
     return jsonify({'status': 'success'}), 201
 
 def get_db_connection():
