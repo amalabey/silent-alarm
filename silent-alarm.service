@@ -1,0 +1,14 @@
+[Unit]
+Description=Silent Alarm Web Application
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/shared/silent-alarm
+Environment=FLASK_APP=app.py
+Environment=FLASK_CONFIG=production
+ExecStart=/home/pi/shared/silent-alarm/venv/bin/flask run --port 8080 --host 0.0.0.0
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
