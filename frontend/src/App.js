@@ -1,6 +1,6 @@
 import axios from 'axios';
 import 'date-fns';
-import { format, formatRelative } from 'date-fns';
+import { format, formatRelative, isBefore, add } from 'date-fns';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import {
@@ -32,7 +32,9 @@ function App() {
   };
 
   const addAlarm = () => {
-    const formattedDateStr = format(selectedTime, "yyyy-MM-dd HH:mm")
+    const now = new Date();
+
+    const formattedDateStr = format(isBefore(selectedTime, now) ? add(selectedTime, { days: 1 }) : selectedTime, "yyyy-MM-dd HH:mm")
     axios.post(apiUrl, {'alarmtime': formattedDateStr}).then(() => {
       fetchData();
     });
