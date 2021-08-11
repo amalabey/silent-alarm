@@ -82,12 +82,12 @@ function App() {
             {alarms &&
               alarms.map((alarm, index) => {
                 const alarmTime = new Date(alarm.time);
-                const timeText = format(alarmTime, "h:mm a");
-                const fullText = formatRelative(alarmTime, new Date());
+                const primaryText = alarm.tag !== null ? alarm.tag : format(alarmTime, "h:mm a");
+                const secondaryText = formatRelative(alarmTime, new Date());
                 const listItemClass = alarmTime < new Date() ? "pastAlarm" : "upcomingAlarm";
                 return (
                   <ListItem className={listItemClass}>
-                    <ListItemText primary={timeText} secondary={fullText} />
+                    <ListItemText primary={primaryText} secondary={secondaryText} />
                     <ListItemSecondaryAction>
                       <IconButton edge="end" aria-label="delete" onClick={() => deleteAlarm(alarm.id)}>
                         <DeleteIcon />
