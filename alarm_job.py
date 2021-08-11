@@ -6,8 +6,8 @@ import time
 # ALARM STATES: 0 - NEW, 1 - ALARMING, 2 - SNOOZED, 3 - STOPPED
 DB_NAME = 'database.db'
 VIBRATION_MOTOR_GPIO_PIN = 14
-ALARM_TRIGGER_PULSE_TIME = 1
-ALARM_TRIGGER_IDLE_TIME = 1
+ALARM_TRIGGER_PULSE_TIME = 0.2
+ALARM_TRIGGER_IDLE_TIME = 0.5
 MAX_SNOOZE_TIME_MINS = 10
 
 def get_alarms():
@@ -54,7 +54,7 @@ def run_motor():
     time.sleep(ALARM_TRIGGER_IDLE_TIME)
 
 def trigger_alarm(alarm, num_of_pulses):
-    print("Alarm triggered for: {0} at {1}".format(alarm['id'], alarm['alarmtime']))
+    print("Alarm triggered for: {0} at {1}, pulses: {2}".format(alarm['id'], alarm['alarmtime'], num_of_pulses))
     for x in range(0, num_of_pulses):
         print("Triggering the alarm: {0}".format(alarm['id']))
         run_motor()
@@ -74,8 +74,8 @@ def process_alarms():
         trigger_alarm(alarm, num_of_pulses)
 
         if lapsed_mins > MAX_SNOOZE_TIME_MINS:
-            set_alarm_state(alarm['id'], 2) # Stop alarm
+            set_alarm_state(alarm['id'], 3) # Stop alarm
         else:
-            set_alarm_state(alarm['id'], 3) # Snooze alarm
+            set_alarm_state(alarm['id'], 2) # Snooze alarm
 
 process_alarms()
