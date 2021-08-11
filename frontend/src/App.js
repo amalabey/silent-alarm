@@ -16,6 +16,15 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import SnoozeIcon from '@material-ui/icons/Snooze';
+import AlarmOffIcon from '@material-ui/icons/AlarmOff';
+import AlarmOnIcon from '@material-ui/icons/AlarmOn';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import Avatar from '@material-ui/core/Avatar';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 function App() {
   const [alarms, setAlarms] = useState(null);
@@ -46,13 +55,36 @@ function App() {
     });
   }
 
+  const alarmIcon = (state) => {
+    switch(state)
+    {
+      case 0:
+        return <AlarmOnIcon/>;
+      case 1:
+        return <NotificationsActiveIcon/>
+      case 2:
+        return <SnoozeIcon/>;
+      case 3:
+        return <AlarmOffIcon/>;
+      default:
+        return <AlarmOnIcon/>;
+    }
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
 
   return (
     <div className="App">
-      <Grid
+        <AppBar position="static">
+          <Toolbar>
+            <Typography>
+              Silent Alarm
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Grid
         container
         direction="row"
         justifyContent="center"
@@ -86,7 +118,12 @@ function App() {
                 const secondaryText = formatRelative(alarmTime, new Date());
                 const listItemClass = alarmTime < new Date() ? "pastAlarm" : "upcomingAlarm";
                 return (
-                  <ListItem className={listItemClass}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        {alarmIcon(alarm.state)}
+                      </Avatar>
+                    </ListItemAvatar>
                     <ListItemText primary={primaryText} secondary={secondaryText} />
                     <ListItemSecondaryAction>
                       <IconButton edge="end" aria-label="delete" onClick={() => deleteAlarm(alarm.id)}>
