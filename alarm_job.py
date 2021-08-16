@@ -51,7 +51,7 @@ def run_motor():
     GPIO.output(VIBRATION_MOTOR_GPIO_PIN, GPIO.HIGH)
     time.sleep(ALARM_TRIGGER_PULSE_TIME)
     GPIO.output(VIBRATION_MOTOR_GPIO_PIN, GPIO.LOW)
-    time.sleep(ALARM_TRIGGER_IDLE_TIME)
+    #time.sleep(ALARM_TRIGGER_IDLE_TIME)
 
 def trigger_alarm(alarm, num_of_pulses):
     print("Alarm triggered for: {0} at {1}, pulses: {2}".format(alarm['id'], alarm['alarmtime'], num_of_pulses))
